@@ -1,0 +1,8 @@
+{
+  "name"         : "paris-transport-api",
+  "version"      : "0.0.1",
+  "description"  : "RATP scrapper to API",
+  "author"       : "Thibaut LE LEVIER",
+  "dependencies" : {
+  }
+}
