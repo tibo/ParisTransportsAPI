@@ -4,10 +4,19 @@ var request = require('request');
 var cheerio = require('cheerio');
 
 app.get('/', function(req, res){
-  url = 'http://www.ratp.fr/horaires/fr/ratp/metro/prochains_passages/PP/mairie+de+clichy/13/A'
+  res.sendFile(__dirname + '/statics/home.json');
+})
+
+app.get('/:type/:station/:line/:direction', function(req, res){
+  if (req.params.type != 'metro') {
+    res.json({'error':'only handling the metro for now'});
+    return;
+  };
+
+  url = 'http://www.ratp.fr/horaires/fr/ratp/metro/prochains_passages/PP/' + req.params.station + '/' + req.params.line + '/' + req.params.direction
   request(url, function(error, response, html) {
     if (error) {
-      res.send(error);
+      res.json({'error': error});
     }
     else {
       var schedule = Array();
@@ -19,7 +28,8 @@ app.get('/', function(req, res){
           schedule.push({'destination' : destination, 'arriving' : arriving});
         });
       });
-      res.send(schedule);
+      var result = {'type': req.params.type, 'station': req.params.station, 'line': req.params.line, 'direction': req.params.direction, 'schedule': schedule};
+      res.json(result);
     }
     
   });

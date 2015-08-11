@@ -1,0 +1,40 @@
+{
+    "services": [
+        {
+            "title": "get next trains",
+            "uri": "/:type/:station/:line/:direction",
+            "arguments": [
+                {
+                    "argument": "type",
+                    "description": "type of transport",
+                    "values": [
+                        "metro"
+                    ]
+                },
+                {
+                    "argument": "station",
+                    "description": "name of the station",
+                    "values": [
+                        "name of the current station from the stations list webservice"
+                    ]
+                },
+                {
+                    "argument": "line",
+                    "description": "number or name of the line",
+                    "values": [
+                        "number or name of the line from the lines list webservice"
+                    ]
+                },
+                {
+                    "argument": "direction",
+                    "description": "direction of the train (to be evolved)",
+                    "values": [
+                        "A",
+                        "R"
+                    ]
+                }
+            ],
+            "sample": "http://localhost:3000/metro/mairie+de+clichy/13/A"
+        }
+    ]
+}
