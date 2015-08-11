@@ -16,7 +16,7 @@ app.get('/:type/:station/:line/:direction', function(req, res){
   url = 'http://www.ratp.fr/horaires/fr/ratp/metro/prochains_passages/PP/' + req.params.station + '/' + req.params.line + '/' + req.params.direction
   request(url, function(error, response, html) {
     if (error) {
-      res.json({'error': error});
+      res.status(422).json({'error': error});
     }
     else {
       var schedule = Array();
@@ -28,6 +28,12 @@ app.get('/:type/:station/:line/:direction', function(req, res){
           schedule.push({'destination' : destination, 'arriving' : arriving});
         });
       });
+
+      if (schedule.length == 0) {
+        res.status(404).json({'error':'Something went wrong. Make sure to check the documentation http://localhost:3000/'});
+        return;
+      }
+
       var result = {'type': req.params.type, 'station': req.params.station, 'line': req.params.line, 'direction': req.params.direction, 'schedule': schedule};
       res.json(result);
     }
