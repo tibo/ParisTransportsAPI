@@ -2,21 +2,41 @@ var app = require('express')();
 var http = require('http').Server(app);
 var request = require('request');
 var cheerio = require('cheerio');
+var vm = require('vm');
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/statics/home.json');
 })
 
+app.get('/:type/stations', function(req, res){
+  if (req.params.type != 'metro') {
+    res.status(422).json({'error':'only handling the metro for now'});
+    return;
+  };
+
+  url = 'http://www.ratp.fr/horaires/js/liste-stations-metro-domaine-reel.js?culture=fr&theme=ratp'
+  request(url, function(error, response, result){
+    if (error) {
+      res.json({'error': error});
+    }
+    else {
+      vm.runInThisContext(result);
+      res.json(liste_stations_metro_domaine_reel);
+    }
+  });
+
+});
+
 app.get('/:type/:station/:line/:direction', function(req, res){
   if (req.params.type != 'metro') {
-    res.json({'error':'only handling the metro for now'});
+    res.status(422).json({'error':'only handling the metro for now'});
     return;
   };
 
   url = 'http://www.ratp.fr/horaires/fr/ratp/metro/prochains_passages/PP/' + req.params.station + '/' + req.params.line + '/' + req.params.direction
   request(url, function(error, response, html) {
     if (error) {
-      res.status(422).json({'error': error});
+      res.json({'error': error});
     }
     else {
       var schedule = Array();
