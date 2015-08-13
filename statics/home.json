@@ -56,6 +56,20 @@
                 }
             ],
             "sample": "http://localhost:3000/metro/destinations/13"
+        },
+        {
+            "title": "get the list of lines available",
+            "uri": "/:type/lines",
+            "arguments": [
+                {
+                    "argument": "type",
+                    "description": "type of transport",
+                    "values": [
+                        "metro"
+                    ]
+                }
+            ],
+            "sample": "http://localhost:3000/metro/lines"
         }
     ]
 }

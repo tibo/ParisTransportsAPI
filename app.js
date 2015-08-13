@@ -8,6 +8,16 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/statics/home.json');
 })
 
+app.get('/:type/lines', function(req, res){
+  if (req.params.type != 'metro') {
+    res.status(422).json({'error':'only handling the metro for now'});
+    return;
+  };
+
+  res.sendFile(__dirname + '/statics/lines-metro.json');
+});
+
+
 app.get('/:type/stations', function(req, res){
   if (req.params.type != 'metro') {
     res.status(422).json({'error':'only handling the metro for now'});
