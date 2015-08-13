@@ -27,6 +27,91 @@ app.get('/:type/stations', function(req, res){
 
 });
 
+app.get('/:type/destinations/:line', function(req, res){
+  if (req.params.type != 'metro') {
+    res.status(422).json({'error':'only handling the metro for now'});
+    return;
+  };
+
+  var station;
+  switch (req.params.line) {
+    case "1":
+      station = "argentine";
+      break;
+    case "2":
+      station = "anvers";
+      break;
+    case "3":
+      station = "sentier";
+      break;
+    case "3bis":
+      station = "pelleport";
+      break;
+    case "4":
+      station = "alesia";
+      break;
+    case "5":
+      station = "ourcq";
+      break;
+    case "6":
+      station = "glaciere";
+      break;
+    case "7":
+      station = "cadet";
+      break;
+    case "7bis":
+      station = "bolivar";
+      break;
+    case "8":
+      station = "commerce";
+      break;
+    case "9":
+      station = "voltaire";
+      break;
+    case "10":
+      station = "vaneau";
+      break;
+    case "11":
+      station = "jourdain";
+      break;
+    case "12":
+      station = "abbesses";
+      break;
+    case "13":
+      station = "liege";
+      break;
+    case "14":
+      station = "cour saint emilion";
+      break;
+  }
+
+  url = 'http://www.ratp.fr/horaires/fr/ratp/metro';
+  form = {'metroServiceStationForm[station]':station,'metroServiceStationForm[service]':'PP'};
+  request.post(url, {form: form}, function(error, response, result){
+    if (error) {
+      res.json({'error': error});
+    }
+    else {
+      var destinations = Array();
+      var $ = cheerio.load(result);
+      $('.nojs tbody tr').filter(function(){
+        $(this).find('td').each(function(){
+          $(this).find('a').each(function(){
+            var name = $(this).text();
+            var uri = $(this).attr('href');
+            var direction = uri.substring(uri.length -1, uri.length);
+
+            destinations.push({'name' : name, 'direction' : direction, 'uri' : uri});
+          });
+        });
+      });
+      
+      var result = {'type': req.params.type, 'line': req.params.line, 'destinations': destinations};
+      res.json(result);
+    }
+  });
+});
+
 app.get('/:type/:station/:line/:direction', function(req, res){
   if (req.params.type != 'metro') {
     res.status(422).json({'error':'only handling the metro for now'});
