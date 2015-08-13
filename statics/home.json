@@ -15,19 +15,19 @@
                     "argument": "station",
                     "description": "name of the station",
                     "values": [
-                        "name of the current station from the stations list webservice"
+                        "name of the current station from the stations list endpoint"
                     ]
                 },
                 {
                     "argument": "line",
                     "description": "number or name of the line",
                     "values": [
-                        "number or name of the line from the lines list webservice"
+                        "number or name of the line from the lines list endpoint"
                     ]
                 },
                 {
                     "argument": "direction",
-                    "description": "direction of the train (to be evolved)",
+                    "description": "direction of the train (from the destinations endpoint)",
                     "values": [
                         "A",
                         "R"
@@ -35,6 +35,27 @@
                 }
             ],
             "sample": "http://localhost:3000/metro/mairie+de+clichy/13/A"
+        },
+        {
+            "title": "get available destinations for a line",
+            "uri": "/:type/destinations/:line",
+            "arguments": [
+                {
+                    "argument": "type",
+                    "description": "type of transport",
+                    "values": [
+                        "metro"
+                    ]
+                },
+                {
+                    "argument": "line",
+                    "description": "number or name of the line",
+                    "values": [
+                        "number or name of the line from the lines list endpoint"
+                    ]
+                }
+            ],
+            "sample": "http://localhost:3000/metro/destinations/13"
         }
     ]
 }

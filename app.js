@@ -101,7 +101,7 @@ app.get('/:type/destinations/:line', function(req, res){
             var uri = $(this).attr('href');
             var direction = uri.substring(uri.length -1, uri.length);
 
-            destinations.push({'name' : name, 'direction' : direction, 'uri' : uri});
+            destinations.push({'name' : name, 'direction' : direction});
           });
         });
       });
