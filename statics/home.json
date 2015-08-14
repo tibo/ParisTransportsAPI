@@ -34,11 +34,11 @@
                     ]
                 }
             ],
-            "sample": "http://localhost:3000/metro/mairie+de+clichy/13/A"
+            "sample": "http://localhost:3000/metro/mairie de clichy/13/A"
         },
         {
-            "title": "get available destinations for a line",
-            "uri": "/:type/destinations/:line",
+            "title": "get available lines and destinations for a station",
+            "uri": "/:type/stations/:station/lignes",
             "arguments": [
                 {
                     "argument": "type",
@@ -48,28 +48,14 @@
                     ]
                 },
                 {
-                    "argument": "line",
-                    "description": "number or name of the line",
+                    "argument": "station",
+                    "description": "name of the station",
                     "values": [
-                        "number or name of the line from the lines list endpoint"
+                        "name of the current station from the stations list endpoint"
                     ]
                 }
             ],
-            "sample": "http://localhost:3000/metro/destinations/13"
-        },
-        {
-            "title": "get the list of lines available",
-            "uri": "/:type/lines",
-            "arguments": [
-                {
-                    "argument": "type",
-                    "description": "type of transport",
-                    "values": [
-                        "metro"
-                    ]
-                }
-            ],
-            "sample": "http://localhost:3000/metro/lines"
+            "sample": "http://localhost:3000/metro/stations/mairie de clichy/lines"
         }
     ]
 }
