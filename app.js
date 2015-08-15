@@ -2,7 +2,6 @@ var app = require('express')();
 var http = require('http').Server(app);
 var request = require('request');
 var cheerio = require('cheerio');
-var vm = require('vm');
 
 var db = require('monk')('localhost/transportapi');
 var stations = db.get('stations');
@@ -16,17 +15,6 @@ app.get('/:type/stations', function(req, res){
     res.status(422).json({'error':'only handling the metro for now'});
     return;
   };
-
-  // url = 'http://www.ratp.fr/horaires/js/liste-stations-metro-domaine-reel.js?culture=fr&theme=ratp'
-  // request(url, function(error, response, result){
-  //   if (error) {
-  //     res.json({'error': error});
-  //   }
-  //   else {
-  //     vm.runInThisContext(result);
-  //     res.json(liste_stations_metro_domaine_reel);
-  //   }
-  // });
 
   stations.find({}, {}, function(error, results){
     res.json(results);
