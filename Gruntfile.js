@@ -1,5 +1,5 @@
 module.exports = function(grunt) {
-  
+
   grunt.initConfig({
     import_stations : {
       metro : {
@@ -12,11 +12,14 @@ module.exports = function(grunt) {
       }
     },
     geocode_stations : {
-      metro : {
+      all : {
         dburl : 'localhost/transportapi'
-      },
-      other : {
-        dburl : null
+      }
+    },
+    match_locations : {
+      all : {
+        dburl : 'localhost/transportapi',
+        file : 'datas/stops.txt'
       }
     }
   });
