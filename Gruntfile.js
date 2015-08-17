@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
+  
   grunt.initConfig({
-    seed_stations : {
-
+    import_stations : {
       metro : {
         dburl : 'localhost/transportapi',
         url : 'http://www.ratp.fr/horaires/js/liste-stations-metro-domaine-reel.js?culture=fr&theme=ratp'
@@ -10,8 +10,17 @@ module.exports = function(grunt) {
         dburl : null,
         url : null
       }
+    },
+    geocode_stations : {
+      metro : {
+        dburl : 'localhost/transportapi'
+      },
+      other : {
+        dburl : null
+      }
     }
   });
 
   grunt.loadTasks('tasks');
+
 };

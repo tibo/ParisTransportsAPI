@@ -17,9 +17,17 @@ app.get('/:type/stations', function(req, res){
   };
 
   stations.find({}, {}, function(error, results){
-    res.json(results);
+    res.json({'stations':results});
   });
+});
 
+app.get('/:type/stations.html', function(req, res){
+  if (req.params.type != 'metro') {
+    res.status(422).json({'error':'only handling the metro for now'});
+    return;
+  };
+
+  res.sendFile(__dirname + '/statics/stations-metro.html');
 });
 
 app.get('/:type/stations/:station/lines', function(req, res){
