@@ -1,6 +1,49 @@
 {
     "services": [
         {
+            "title": "get stations",
+            "uri": "/:type/stations",
+            "arguments": [
+                {
+                    "argument": "type",
+                    "description": "type of transport",
+                    "values": [
+                        "metro"
+                    ]
+                },
+                {
+                    "argument": "ll (as get query, optional)",
+                    "description": "latitude/longitude to get the results relative to",
+                    "values": [
+                        "latitude and longitude as ll argument"
+                    ]
+                }
+            ],
+            "sample": "http://localhost:3000/metro/stations?ll=48.9041463,2.3027335",
+            "more": "list of the stations on a map: /:type/stations.html"
+        },
+        {
+            "title": "get available lines and destinations for a station",
+            "uri": "/:type/stations/:station/lignes",
+            "arguments": [
+                {
+                    "argument": "type",
+                    "description": "type of transport",
+                    "values": [
+                        "metro"
+                    ]
+                },
+                {
+                    "argument": "station",
+                    "description": "name of the station",
+                    "values": [
+                        "name of the current station from the stations list endpoint"
+                    ]
+                }
+            ],
+            "sample": "http://localhost:3000/metro/stations/mairie de clichy/lines"
+        },
+        {
             "title": "get next trains",
             "uri": "/:type/:station/:line/:direction",
             "arguments": [
@@ -35,27 +78,6 @@
                 }
             ],
             "sample": "http://localhost:3000/metro/mairie de clichy/13/A"
-        },
-        {
-            "title": "get available lines and destinations for a station",
-            "uri": "/:type/stations/:station/lignes",
-            "arguments": [
-                {
-                    "argument": "type",
-                    "description": "type of transport",
-                    "values": [
-                        "metro"
-                    ]
-                },
-                {
-                    "argument": "station",
-                    "description": "name of the station",
-                    "values": [
-                        "name of the current station from the stations list endpoint"
-                    ]
-                }
-            ],
-            "sample": "http://localhost:3000/metro/stations/mairie de clichy/lines"
         }
     ]
 }
