@@ -18,6 +18,11 @@ module.exports = function(grunt) {
       other : {
         dburl : null
       }
+    },
+    patch_datas : {
+      all : {
+        dburl : 'localhost/transportapi'
+      }
     }
   });
 

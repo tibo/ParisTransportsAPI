@@ -24,7 +24,7 @@
     var mapsOptions = {
       center: new google.maps.LatLng(48.856614,2.3522219),
       mapTypeId: google.maps.MapTypeId.ROADMAP,
-      zoom: 5
+      zoom: 10
     };
 
     map = new google.maps.Map(document.getElementById("map"), mapsOptions);
@@ -49,7 +49,7 @@
               marker = new google.maps.Marker({
                 position: latlng,
                 map: map,
-                title: station.name,
+                title: station.key,
                 icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
               });
 
