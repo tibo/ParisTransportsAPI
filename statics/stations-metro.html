@@ -44,8 +44,8 @@
       success:function(result) {
         if (result['stations']) {
           result['stations'].forEach(function(station){
-            if (station.lat && station.lng) {
-              var latlng = new google.maps.LatLng(station.lat, station.lng);
+            if (station.location) {
+              var latlng = new google.maps.LatLng(station.location[0], station.location[1]);
               marker = new google.maps.Marker({
                 position: latlng,
                 map: map,
@@ -55,9 +55,8 @@
 
               setup_marker_info(marker);
             }
-            else {
-              $('#logs').append('<tr><td>' + station.name + '</td><td>' + station.key + '</td><td><a href="https://www.google.fr/maps/place/' + station.lat + ',' + station.lng + '" target="_blank">' + station.lat + 'x' + station.lng + '</a></td></tr>');
-            }
+            
+            $('#logs').append('<tr><td>' + station.name + '</td><td>' + station.key + '</td><td><a href="https://www.google.fr/maps/place/' + station.location[0] + ',' + station.location[1] + '" target="_blank">' + station.location[0] + 'x' + station.location[1] + '</a></td></tr>');
 
           });
         }
