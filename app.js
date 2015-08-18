@@ -17,13 +17,16 @@ app.get('/:type/stations', function(req, res){
   };
 
   var query = {};
+  var options = {sort: {name:1}};
   if (req.query.ll) {
     var ll = req.query.ll.split(',');
     for(var i=0; i<ll.length; i++) { ll[i] = +ll[i]; } 
     query['location'] = {$near:ll};
+    options = {};
   }
 
-  stations.find(query, {}, function(error, results){
+  stations.find(query, options, function(error, results){
+    for(var i=0; i<results.length; i++) { delete results[i]._id } 
     res.json({'stations':results});
   });
 });
