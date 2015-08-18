@@ -16,7 +16,14 @@ app.get('/:type/stations', function(req, res){
     return;
   };
 
-  stations.find({}, {}, function(error, results){
+  var query = {};
+  if (req.query.ll) {
+    var ll = req.query.ll.split(',');
+    for(var i=0; i<ll.length; i++) { ll[i] = +ll[i]; } 
+    query['location'] = {$near:ll};
+  }
+
+  stations.find(query, {}, function(error, results){
     res.json({'stations':results});
   });
 });

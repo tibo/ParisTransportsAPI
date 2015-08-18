@@ -10,6 +10,7 @@ module.exports = function(grunt) {
     stations.remove();
 
     stations.index({ location: "2d" }, { min: -180, max: 180 });
+    stations.index('key', { unique: true });
 
     var seed = JSON.parse(fs.readFileSync(this.data.file, 'utf8'));
     var seedStations = seed['stations'];
