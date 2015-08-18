@@ -4,7 +4,7 @@ module.exports = function(grunt) {
     seed :{
       metro: {
         file : 'datas/metro.json',
-        dburl : 'localhost/transportapi'
+        dburl : process.env.MONGOLAB_URI || 'localhost/transportapi'
       },
       other: {
         file : null,
