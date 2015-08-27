@@ -25,6 +25,10 @@ app.get('/:type/stations', function(req, res){
     options = {};
   }
 
+  if (req.query.limit) {
+    options['limit'] = req.query.limit;
+  }
+
   stations.find(query, options, function(error, results){
     for(var i=0; i<results.length; i++) { delete results[i]._id } 
     res.json({'stations':results});
