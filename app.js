@@ -93,13 +93,13 @@ app.get('/:type/stations/:station/lines/:line/directions/:direction/schedules', 
       res.json({'error': error});
     }
     else {
-      var schedule = Array();
+      var schedules = Array();
       var $ = cheerio.load(html);
       $('#prochains_passages tbody tr').filter(function(){
         $(this).each(function() {
           var destination = $(this).children().first().text();
           var arriving = $(this).children().last().text();
-          schedule.push({'destination' : destination, 'arriving' : arriving});
+          schedules.push({'destination' : destination, 'arriving' : arriving});
         });
       });
 
@@ -108,7 +108,7 @@ app.get('/:type/stations/:station/lines/:line/directions/:direction/schedules', 
         return;
       }
 
-      var result = {'type': req.params.type, 'station': req.params.station, 'line': req.params.line, 'direction': req.params.direction, 'schedule': schedule};
+      var result = {'type': req.params.type, 'station': req.params.station, 'line': req.params.line, 'direction': req.params.direction, 'schedules': schedules};
       res.json(result);
     }
     
