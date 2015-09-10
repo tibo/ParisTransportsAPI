@@ -103,7 +103,7 @@ app.get('/:type/stations/:station/lines/:line/directions/:direction/schedules', 
         });
       });
 
-      if (schedule.length == 0) {
+      if (schedules.length == 0) {
         res.status(404).json({'error':'Something went wrong. Make sure to check the documentation http://localhost:3000/'});
         return;
       }
