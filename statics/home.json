@@ -45,7 +45,7 @@
         },
         {
             "title": "get next trains",
-            "uri": "/:type/:station/:line/:direction",
+            "uri": "/:type/stations/:station/lines/:line/directions/:direction/schedules",
             "arguments": [
                 {
                     "argument": "type",

@@ -68,7 +68,7 @@ app.get('/:type/stations/:station/lines', function(req, res){
             var uri = $(this).attr('href');
             var direction = uri.substring(uri.length -1, uri.length);
 
-            destinations.push({'name' : name, 'direction' : direction, 'uri' : '/' + req.params.type + '/' + req.params.station + '/' + line + '/' + direction});
+            destinations.push({'name' : name, 'direction' : direction});
           });
         });
         lines.push({'line' : line, 'destinations' : destinations});
@@ -80,7 +80,7 @@ app.get('/:type/stations/:station/lines', function(req, res){
   });
 });
 
-app.get('/:type/:station/:line/:direction', function(req, res){
+app.get('/:type/stations/:station/lines/:line/directions/:direction/schedules', function(req, res){
   if (req.params.type != 'metro') {
     res.status(422).json({'error':'only handling the metro for now'});
     return;
