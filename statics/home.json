@@ -2,15 +2,8 @@
     "services": [
         {
             "title": "get stations",
-            "uri": "/:type/stations",
+            "uri": "/stations",
             "arguments": [
-                {
-                    "argument": "type",
-                    "description": "type of transport",
-                    "values": [
-                        "metro"
-                    ]
-                },
                 {
                     "argument": "ll (as get query, optional)",
                     "description": "latitude/longitude to get the results relative to",
@@ -19,8 +12,8 @@
                     ]
                 }
             ],
-            "sample": "http://localhost:3000/metro/stations?ll=48.9041463,2.3027335",
-            "more": "list of the stations on a map: /:type/stations.html"
+            "sample": "http://localhost:3000/stations?ll=48.9041463,2.3027335",
+            "more": "list of the stations on a map: /stations.html"
         },
         {
             "title": "get available lines and destinations for a station",

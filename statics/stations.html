@@ -40,7 +40,7 @@
 
     $.ajax({
       type:'GET',
-      url:'http://localhost:3000/metro/stations',
+      url:'http://localhost:3000/stations',
       success:function(result) {
         if (result['stations']) {
           result['stations'].forEach(function(station){

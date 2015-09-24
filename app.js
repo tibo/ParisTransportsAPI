@@ -10,12 +10,7 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/statics/home.json');
 })
 
-app.get('/:type/stations', function(req, res){
-  if (req.params.type != 'metro') {
-    res.status(422).json({'error':'only handling the metro for now'});
-    return;
-  };
-
+app.get('/stations', function(req, res){
   var query = {};
   var options = {sort: {name:1}};
   if (req.query.ll) {
@@ -35,13 +30,8 @@ app.get('/:type/stations', function(req, res){
   });
 });
 
-app.get('/:type/stations.html', function(req, res){
-  if (req.params.type != 'metro') {
-    res.status(422).json({'error':'only handling the metro for now'});
-    return;
-  };
-
-  res.sendFile(__dirname + '/statics/stations-metro.html');
+app.get('/stations.html', function(req, res){
+  res.sendFile(__dirname + '/statics/stations.html');
 });
 
 app.get('/:type/stations/:station/lines', function(req, res){
