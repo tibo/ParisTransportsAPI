@@ -16,7 +16,7 @@ module.exports = function(grunt) {
     var seedStations = seed['stations'];
 
     seedStations.forEach(function(station){
-      stations.insert({subtitle: station.type, title: station.name, key: station.key, location: [station.lat, station.lng]} , function(error, result){
+      stations.insert({type: station.type, name: station.name, key: station.key, location: [station.lat, station.lng]} , function(error, result){
         if (error) throw error;
 
         if (station == seedStations[seedStations.length - 1]) {

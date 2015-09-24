@@ -25,7 +25,13 @@ app.get('/stations', function(req, res){
   }
 
   stations.find(query, options, function(error, results){
-    for(var i=0; i<results.length; i++) { delete results[i]._id } 
+    for(var i=0; i<results.length; i++) { 
+      delete results[i]._id 
+      if (req.query.device == 'pebble') {
+        results[i].title = results[i].name
+        results[i].subtitletitle = results[i].type
+      }
+    } 
     res.json({'stations':results});
   });
 });
