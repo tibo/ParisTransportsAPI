@@ -106,11 +106,21 @@ app.get('/:type/stations/:station/lines/:line/directions/:direction/schedules', 
         $(this).each(function() {
           var destination = $(this).children().first().text();
           var arriving = $(this).children().last().text();
-          if (arriving.length > 0) {
-            schedules.push({'destination' : destination, 'arriving' : arriving});  
+          if (req.query.device == 'pebble') {
+            if (arriving.length > 0) {
+              schedules.push({'title' : destination, 'items' : [{'title' : arriving}]});  
+            }
+            else {
+              schedules.push({'items' : [{'title' : destination}]});
+            }
           }
           else {
-            schedules.push({'arriving' : destination});
+            if (arriving.length > 0) {
+              schedules.push({'destination' : destination, 'arriving' : arriving});  
+            }
+            else {
+              schedules.push({'arriving' : destination});
+            }
           }
           
         });
