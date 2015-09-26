@@ -64,10 +64,21 @@ app.get('/:type/stations/:station/lines', function(req, res){
             var uri = $(this).attr('href');
             var direction = uri.substring(uri.length -1, uri.length);
 
-            destinations.push({'name' : name, 'direction' : direction});
+            if (req.query.device == 'pebble') {
+              destinations.push({'title' : name, 'direction' : direction});
+            }
+            else {
+              destinations.push({'name' : name, 'direction' : direction});  
+            }
+            
           });
         });
-        lines.push({'line' : line, 'destinations' : destinations});
+        if (req.query.device == 'pebble') {
+          lines.push({'title' : line, 'items' : destinations});
+        }
+        else {
+          lines.push({'line' : line, 'destinations' : destinations});
+        }
       });
       
       var result = {'type': req.params.type, 'line': req.params.line, 'lines': lines};
