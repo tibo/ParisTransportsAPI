@@ -106,7 +106,13 @@ app.get('/:type/stations/:station/lines/:line/directions/:direction/schedules', 
         $(this).each(function() {
           var destination = $(this).children().first().text();
           var arriving = $(this).children().last().text();
-          schedules.push({'destination' : destination, 'arriving' : arriving});
+          if (arriving.length > 0) {
+            schedules.push({'destination' : destination, 'arriving' : arriving});  
+          }
+          else {
+            schedules.push({'arriving' : destination});
+          }
+          
         });
       });
 
