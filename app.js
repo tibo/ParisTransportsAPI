@@ -136,7 +136,7 @@ app.get('/:type/stations/:station/lines/:line/directions/:direction/schedules', 
       }
       else {
         if (req.query.device == 'pebble') {
-          result['schedules'] = {'items' : [{'title' : 'No service found.'}]};
+          result['schedules'] = [{'items' : [{'title' : 'No service found.'}]}];
         }
         else {
           result['error'] = 'No service found.';
