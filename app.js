@@ -107,31 +107,42 @@ app.get('/:type/stations/:station/lines/:line/directions/:direction/schedules', 
           var destination = $(this).children().first().text();
           var arriving = $(this).children().last().text();
           if (req.query.device == 'pebble') {
-            if (arriving.length > 0) {
-              schedules.push({'title' : destination, 'items' : [{'title' : arriving}]});  
-            }
-            else {
-              schedules.push({'items' : [{'title' : destination}]});
+            if (destination.length > 0) {
+              if (arriving.length > 0) {
+                schedules.push({'title' : destination, 'items' : [{'title' : arriving}]});  
+              }
+              else {
+                schedules.push({'items' : [{'title' : destination}]});
+              }
             }
           }
           else {
-            if (arriving.length > 0) {
-              schedules.push({'destination' : destination, 'arriving' : arriving});  
-            }
-            else {
-              schedules.push({'arriving' : destination});
+            if (destination.length > 0) {
+              if (arriving.length > 0) {
+                schedules.push({'destination' : destination, 'arriving' : arriving});  
+              }
+              else {
+                schedules.push({'arriving' : destination});
+              }
             }
           }
           
         });
       });
 
-      if (schedules.length == 0) {
-        res.status(404).json({'error':'Something went wrong. Make sure to check the documentation http://localhost:3000/'});
-        return;
+      var result = {'type': req.params.type, 'station': req.params.station, 'line': req.params.line, 'direction': req.params.direction};
+      if (schedules.length > 0) {
+        result['schedules'] = schedules;
+      }
+      else {
+        if (req.query.device == 'pebble') {
+          result['schedules'] = {'items' : [{'title' : 'No service found.'}]};
+        }
+        else {
+          result['error'] = 'No service found.';
+        }
       }
 
-      var result = {'type': req.params.type, 'station': req.params.station, 'line': req.params.line, 'direction': req.params.direction, 'schedules': schedules};
       res.json(result);
     }
     
