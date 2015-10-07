@@ -37,7 +37,10 @@ app.get('/stations', function(req, res){
 
       if (req.query.device == 'pebble') {
         results[i].title = results[i].name
-        results[i].subtitle = results[i].type + ' - ' + results[i].distance + 'm';
+        results[i].subtitle = results[i].type
+        if (results[i].distance) {
+          results[i].subtitle += ' - ' + results[i].distance + 'm';
+        }
         delete results[i].type;
         delete results[i].name;
         delete results[i].distance;
