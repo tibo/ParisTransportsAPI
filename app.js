@@ -6,17 +6,21 @@ var cheerio = require('cheerio');
 var db = require('monk')(process.env.MONGOLAB_URI || 'localhost/transportapi');
 var stations = db.get('stations');
 
+var geolib = require('geolib');
+
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/statics/home.json');
 })
 
 app.get('/stations', function(req, res){
+  var userLocation;
   var query = {};
   var options = {sort: {name:1}};
   if (req.query.ll) {
     var ll = req.query.ll.split(',');
     for(var i=0; i<ll.length; i++) { ll[i] = +ll[i]; } 
-    query['location'] = {$near:ll};
+    userLocation = ll;
+    query['location'] = { $near : ll};
     options = {};
   }
 
@@ -27,9 +31,16 @@ app.get('/stations', function(req, res){
   stations.find(query, options, function(error, results){
     for(var i=0; i<results.length; i++) { 
       delete results[i]._id 
+      if (userLocation && results[i].location) {
+        results[i].distance = geolib.getDistance({latitude : userLocation[0], longitude : userLocation[1]}, {latitude : results[i].location[0], longitude : results[i].location[1]});
+      }
+
       if (req.query.device == 'pebble') {
         results[i].title = results[i].name
-        results[i].subtitle = results[i].type
+        results[i].subtitle = results[i].type + ' - ' + results[i].distance + 'm';
+        delete results[i].type;
+        delete results[i].name;
+        delete results[i].distance;
       }
     } 
     res.json({'stations':results});
