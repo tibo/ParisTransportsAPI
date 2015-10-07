@@ -29,7 +29,7 @@ app.get('/stations', function(req, res){
       delete results[i]._id 
       if (req.query.device == 'pebble') {
         results[i].title = results[i].name
-        results[i].subtitletitle = results[i].type
+        results[i].subtitle = results[i].type
       }
     } 
     res.json({'stations':results});
