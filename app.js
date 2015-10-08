@@ -41,7 +41,6 @@ app.get('/stations', function(req, res){
         if (results[i].distance) {
           results[i].subtitle += ' - ' + results[i].distance + 'm';
         }
-        delete results[i].type;
         delete results[i].name;
         delete results[i].distance;
       }
