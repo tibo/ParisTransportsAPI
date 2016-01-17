@@ -1,0 +1,19 @@
+db:
+  container_name: paris_mongo
+  image: mongo
+redis:
+  container_name: paris_redis
+  image: redis
+app: 
+  build: .
+  command: node app.js
+  environment:
+    MONGOLAB_URI: mongodb://paris_mongo:27017/paris_transport
+    REDIS_URL: redis://paris_redis:6379/paris_transport
+  volumes:
+    - .:/api
+  ports:
+    - "3000:3000"
+  links:
+    - db
+    - redis

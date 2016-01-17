@@ -2,7 +2,7 @@
   "name": "paris-transport-api",
   "version": "0.0.1",
   "description": "RATP scrapper to API",
-  "author": "Thibaut LE LEVIER",
+  "author": "Thibaut LE LEVIER <thibaut@lelevier.fr>",
   "dependencies": {
     "cheerio": "^0.19.0",
     "express": "^4.13.3",
@@ -10,7 +10,7 @@
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
     "grunt-prompt": "^1.3.0",
-    "mongodb": "^2.0.41",
+    "mongodb": "^1.4",
     "monk": "^1.0.1",
     "request": "^2.60.0"
   }

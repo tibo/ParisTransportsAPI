@@ -3,7 +3,7 @@ var http = require('http').Server(app);
 var request = require('request');
 var cheerio = require('cheerio');
 
-var db = require('monk')(process.env.MONGOLAB_URI || 'localhost/transportapi');
+var db = require('monk')(process.env.MONGOLAB_URI);
 var stations = db.get('stations');
 
 var geolib = require('geolib');

@@ -3,12 +3,10 @@ module.exports = function(grunt) {
   grunt.initConfig({
     seed :{
       metro: {
-        file : 'datas/metro.json',
-        dburl : process.env.MONGOLAB_URI || 'localhost/transportapi'
+        file : 'datas/metro.json'
       },
       other: {
-        file : null,
-        dburl : null
+        file : null
       }
     }
   });

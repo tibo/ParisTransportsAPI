@@ -4,7 +4,7 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('seed','Seed stations',function(){
     var done = this.async();
 
-    var db = require('monk')(this.data.dburl);
+    var db = require('monk')(process.env.MONGOLAB_URI);
     var stations = db.get('stations');
 
     stations.remove();
