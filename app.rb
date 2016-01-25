@@ -41,11 +41,18 @@ class ParisTransportAPI < Sinatra::Base
   end
 
   get "/:type/:station/:line/:direction/schedules" do |type, station, line, direction|
+    content_type :json
+
     mechanize = Mechanize.new
     url = "http://www.ratp.fr/horaires/fr/ratp/metro/prochains_passages/PP/#{station}/#{line}/#{direction}"
     page = mechanize.get(url)
 
-    page.body
+    schedules = Array.new
+    page.search('#prochains_passages tbody tr').each do |schedule|
+      schedules << {'destination':schedule.first_element_child.text,'arriving':schedule.last_element_child.text}
+    end
+
+    {'type':type,'schedules':schedules}.to_json
   end
 
 end
