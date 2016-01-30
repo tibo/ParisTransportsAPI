@@ -1,9 +1,13 @@
 source 'https://rubygems.org'
 ruby "2.2.3"
 
-gem 'sinatra', '~> 1.4', '>= 1.4.6'
+gem 'rake'
 
-gem 'mechanize', '~> 2.7', '>= 2.7.4'
+gem 'sinatra', '~> 1.4'
+
+gem 'mechanize', '~> 2.7'
+
+gem 'mongoid', '~> 4.0'
 
 
 group :development do

@@ -2,6 +2,8 @@ require "sinatra"
 require "sinatra/reloader" if development?
 require 'mechanize'
 
+require './models/station.rb'
+
 class ParisTransportAPI < Sinatra::Base
   enable :logging
 
@@ -10,10 +12,34 @@ class ParisTransportAPI < Sinatra::Base
   end
 
   configure do
+    Mongoid.load!('./config/mongoid.yml')
+    Mongoid.logger.level = Logger::ERROR
+    Moped.logger.level = Logger::ERROR
   end
 
   get '/' do
     "Hello"
+  end
+
+  get '/stations' do
+    content_type :json
+
+    if params[:ll].nil?
+      halt 400, {:error => "Latitude and longitude required"}.to_json
+    end
+
+    latlong = params[:ll].split(',')
+
+    if latlong.length != 2
+      halt 400, {:error => "Invalid latitude and longitude"}.to_json
+    end
+
+    lat = latlong.first.to_f
+    lng = latlong[1].to_f
+
+    stations = Station.geo_near([ lat, lng ])
+
+    {'stations':stations}.to_json
   end
 
   get '/:type/:station/lines' do |type, station|
