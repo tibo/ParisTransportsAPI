@@ -6,7 +6,7 @@ redis:
   image: redis
 app: 
   build: .
-  command: node app.js
+  command: forever -w -f app.js
   environment:
     MONGOLAB_URI: mongodb://paris_mongo:27017/paris_transport
     REDIS_URL: redis://paris_redis:6379/paris_transport

@@ -7,13 +7,16 @@ ENV NODE_VERSION 4.1.1
 
 RUN mkdir /api
 WORKDIR /api
+
 ADD . /api
 
-EXPOSE 3000
+RUN npm install -g forever
 
 COPY package.json /api/package.json
 RUN npm install
 
 ENV PATH=$PATH:/api/node_modules/.bin/
 
-CMD [ "node", "app.js" ]
+EXPOSE 3000
+
+CMD forever -w -f app.js
