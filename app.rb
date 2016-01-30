@@ -1,8 +1,8 @@
 require "sinatra"
 require "sinatra/reloader" if development?
-require 'mechanize'
 
-require './models/station.rb'
+require './models/_init.rb'
+require './helpers/_init.rb'
 
 class ParisTransportAPI < Sinatra::Base
   enable :logging
@@ -42,43 +42,32 @@ class ParisTransportAPI < Sinatra::Base
     {'stations':stations}.to_json
   end
 
-  get '/:type/:station/lines' do |type, station|
+  get '/:type/:station/lines' do |type, station_key|
     content_type :json
 
-    mechanize = Mechanize.new
-    page = mechanize.post('http://www.ratp.fr/horaires/fr/ratp/metro', {
-        "metroServiceStationForm[station]" => station,
-        "metroServiceStationForm[service]" => 'PP'
-      })
-    
-    lines = Array.new
-    page.search('.nojs tbody tr').each do |line|
-      line_name = line.at('img.ligne').attributes['alt'].text.gsub('Ligne ','')
-      l = {"line":line_name}
-      l['destinations'] = Array.new
-      line.search('td a').each do |direction|
-        d = direction.attributes['href'].text.split('').last
-        l['destinations'] << {"name":direction.text, "direction":d}
-      end
-      lines << l
+    station = Station.where(:key => station_key).first
+
+    if station.nil?
+      halt 404, {:error => "Invalid station"}.to_json
     end
 
-    {'type':type,'lines':lines}.to_json
+    lines = RATP_Client.getMetroLinesFor(station)
+
+    {'type':type,'station':station,'lines':lines}.to_json
   end
 
-  get "/:type/:station/:line/:direction/schedules" do |type, station, line, direction|
+  get "/:type/:station/:line/:direction/schedules" do |type, station_key, line, direction|
     content_type :json
 
-    mechanize = Mechanize.new
-    url = "http://www.ratp.fr/horaires/fr/ratp/metro/prochains_passages/PP/#{station}/#{line}/#{direction}"
-    page = mechanize.get(url)
+    station = Station.where(:key => station_key).first
 
-    schedules = Array.new
-    page.search('#prochains_passages tbody tr').each do |schedule|
-      schedules << {'destination':schedule.first_element_child.text,'arriving':schedule.last_element_child.text}
+    if station.nil?
+      halt 404, {:error => "Invalid station"}.to_json
     end
 
-    {'type':type,'schedules':schedules}.to_json
+    schedules = RATP_Client.getMetroSchedulesFor(station, line, direction)
+
+    {'type':type,'station':station,'schedules':schedules}.to_json
   end
 
 end
