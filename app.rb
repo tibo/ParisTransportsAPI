@@ -45,6 +45,10 @@ class ParisTransportAPI < Sinatra::Base
   get '/:type/:station/lines' do |type, station_key|
     content_type :json
 
+    if type != "metro"
+      halt 404, {:error => "Type of transport invalid"}.to_json
+    end
+
     station = Station.where(:key => station_key).first
 
     if station.nil?
@@ -58,6 +62,10 @@ class ParisTransportAPI < Sinatra::Base
 
   get "/:type/:station/:line/:direction/schedules" do |type, station_key, line, direction|
     content_type :json
+
+    if type != "metro"
+      halt 404, {:error => "Type of transport invalid"}.to_json
+    end
 
     station = Station.where(:key => station_key).first
 
