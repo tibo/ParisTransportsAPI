@@ -67,7 +67,7 @@ class ParisTransportAPI < Sinatra::Base
 
     schedules = RATP_Client.getMetroSchedulesFor(station, line, direction)
 
-    {'type':type,'station':station,'schedules':schedules}.to_json
+    {'type':type,'line':line,'direction':direction,'station':station,'schedules':schedules}.to_json
   end
 
 end
