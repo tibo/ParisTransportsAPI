@@ -4,6 +4,8 @@ require "sinatra/reloader" if development?
 require './models/_init.rb'
 require './helpers/_init.rb'
 
+require 'redis'
+
 class ParisTransportAPI < Sinatra::Base
   enable :logging
 
@@ -16,6 +18,8 @@ class ParisTransportAPI < Sinatra::Base
     Mongoid.logger.level = Logger::ERROR
     Moped.logger.level = Logger::ERROR
   end
+
+  redis = Redis.new()
 
   before do
     content_type :json
@@ -46,19 +50,33 @@ class ParisTransportAPI < Sinatra::Base
   end
 
   get '/:type/:station/lines' do |type, station_key|
+
     if type != "metro"
       halt 404, {:error => "Type of transport invalid"}.to_json
     end
 
-    station = Station.where(:key => station_key).first
+    cache_key = type + station_key + "lines"
 
-    if station.nil?
-      halt 404, {:error => "Invalid station"}.to_json
+    from_cache = redis.get(cache_key)
+
+    if !from_cache.nil?
+      from_cache
+    else
+      station = Station.where(:key => station_key).first
+
+      if station.nil?
+        halt 404, {:error => "Invalid station"}.to_json
+      end
+
+      lines = RATP_Client.getMetroLinesFor(station)
+
+      result = {'type':type,'station':station,'lines':lines}
+
+      redis.set(cache_key, result.to_json)
+      redis.expire cache_key, 3600
+
+      result.to_json
     end
-
-    lines = RATP_Client.getMetroLinesFor(station)
-
-    {'type':type,'station':station,'lines':lines}.to_json
   end
 
   get "/:type/:station/:line/:direction/schedules" do |type, station_key, line, direction|

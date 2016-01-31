@@ -8,7 +8,7 @@ gem 'sinatra', '~> 1.4'
 gem 'mechanize', '~> 2.7'
 
 gem 'mongoid', '~> 4.0'
-
+gem 'redis', '~> 3.2'
 
 group :development do
   gem 'sinatra-reloader', '~> 1.0'
