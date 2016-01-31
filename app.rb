@@ -17,13 +17,16 @@ class ParisTransportAPI < Sinatra::Base
     Moped.logger.level = Logger::ERROR
   end
 
+  before do
+    content_type :json
+
+  end
+
   get '/' do
     "Hello"
   end
 
   get '/stations' do
-    content_type :json
-
     if params[:ll].nil?
       halt 400, {:error => "Latitude and longitude required"}.to_json
     end
@@ -43,8 +46,6 @@ class ParisTransportAPI < Sinatra::Base
   end
 
   get '/:type/:station/lines' do |type, station_key|
-    content_type :json
-
     if type != "metro"
       halt 404, {:error => "Type of transport invalid"}.to_json
     end
@@ -61,8 +62,6 @@ class ParisTransportAPI < Sinatra::Base
   end
 
   get "/:type/:station/:line/:direction/schedules" do |type, station_key, line, direction|
-    content_type :json
-
     if type != "metro"
       halt 404, {:error => "Type of transport invalid"}.to_json
     end
