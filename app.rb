@@ -24,15 +24,21 @@ class ParisTransportAPI < Sinatra::Base
   before do
     content_type :json
 
+    from_cache = redis.get(request.path_info)
+
+    if !from_cache.nil? 
+      halt 200, from_cache
+    end
+
   end
 
   get '/' do
-    "Hello"
+    {"links":[{"rel":"stations","href":"/stations"}]}.to_json
   end
 
   get '/stations' do
     if params[:ll].nil?
-      halt 400, {:error => "Latitude and longitude required"}.to_json
+      halt 400, {:error => "Latitude and longitude required as \"?ll=latitude,longitude\""}.to_json
     end
 
     latlong = params[:ll].split(',')
@@ -55,28 +61,20 @@ class ParisTransportAPI < Sinatra::Base
       halt 404, {:error => "Type of transport invalid"}.to_json
     end
 
-    cache_key = type + station_key + "lines"
+    station = Station.where(:key => station_key).first
 
-    from_cache = redis.get(cache_key)
-
-    if !from_cache.nil?
-      from_cache
-    else
-      station = Station.where(:key => station_key).first
-
-      if station.nil?
-        halt 404, {:error => "Invalid station"}.to_json
-      end
-
-      lines = RATP_Client.getMetroLinesFor(station)
-
-      result = {'type':type,'station':station,'lines':lines}
-
-      redis.set(cache_key, result.to_json)
-      redis.expire cache_key, 3600
-
-      result.to_json
+    if station.nil?
+      halt 404, {:error => "Invalid station"}.to_json
     end
+
+    lines = RATP_Client.getMetroLinesFor(station)
+
+    result = {'type':type,'station':station,'lines':lines}.to_json
+
+    redis.set(request.path_info, result)
+    redis.expire request.path_info, 3600
+
+    result
   end
 
   get "/:type/:station/:line/:direction/schedules" do |type, station_key, line, direction|
@@ -92,7 +90,12 @@ class ParisTransportAPI < Sinatra::Base
 
     schedules = RATP_Client.getMetroSchedulesFor(station, line, direction)
 
-    {'type':type,'line':line,'direction':direction,'station':station,'schedules':schedules}.to_json
+    result = {'type':type,'line':line,'direction':direction,'station':station,'schedules':schedules}.to_json
+
+    redis.set(request.path_info, result)
+    redis.expire request.path_info, 15
+
+    result
   end
 
 end
