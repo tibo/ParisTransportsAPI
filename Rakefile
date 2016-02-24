@@ -10,8 +10,8 @@ require 'json'
 
 namespace :import do
   Mongoid.load!('./config/mongoid.yml')
-  Mongoid.logger.level = Logger::ERROR
-  Moped.logger.level = Logger::ERROR
+  Mongoid.logger.level = Logger::DEBUG
+  Moped.logger.level = Logger::DEBUG
   
   desc "import metro stations"
   task :metro do
