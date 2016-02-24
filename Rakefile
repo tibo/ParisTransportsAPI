@@ -21,7 +21,7 @@ namespace :import do
     puts "Parsed datas: " + data.to_s
 
     data['stations'].each do |station_hash|
-      puts "importing: " + station_hash
+      puts "importing: " + station_hash.to_s
 
       station = Station.new()
 
