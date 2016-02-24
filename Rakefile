@@ -18,7 +18,7 @@ namespace :import do
     file = File.read('./data/metro.json', :external_encoding => 'utf-8', :internal_encoding => 'utf-8')
     data = JSON.parse(file)
 
-    puts "Parsed datas: " + data
+    puts "Parsed datas: " + data.to_s
 
     data['stations'].each do |station_hash|
       puts "importing: " + station_hash
