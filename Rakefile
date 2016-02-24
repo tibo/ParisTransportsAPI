@@ -18,11 +18,7 @@ namespace :import do
     file = File.read('./data/metro.json', :external_encoding => 'utf-8', :internal_encoding => 'utf-8')
     data = JSON.parse(file)
 
-    puts "Parsed datas: " + data.to_s
-
     data['stations'].each do |station_hash|
-      puts "importing: " + station_hash.to_s
-
       station = Station.new()
 
       station.key = station_hash['key']
@@ -30,7 +26,14 @@ namespace :import do
       station.name = station_hash['name']
       station.type = station_hash['type']
 
-      station.save!
+      begin
+        station.save 
+        puts station_hash['key'] + " saved"
+      rescue OperationFailure => e
+        puts "error while saving: " + station_hash['key']
+        puts e
+        puts station_hash.to_s
+      end
     end
 
     begin 
