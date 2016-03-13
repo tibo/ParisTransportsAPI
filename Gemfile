@@ -7,7 +7,7 @@ gem 'sinatra', '~> 1.4'
 
 gem 'mechanize', '~> 2.7'
 
-gem 'mongoid', '~> 4.0'
+gem 'mongoid', '~> 5.1'
 gem 'redis', '~> 3.2'
 
 group :development do

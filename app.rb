@@ -16,7 +16,6 @@ class ParisTransportAPI < Sinatra::Base
   configure do
     Mongoid.load!('./config/mongoid.yml')
     Mongoid.logger.level = Logger::ERROR
-    Moped.logger.level = Logger::ERROR
   end
 
   redis = Redis.new()

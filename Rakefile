@@ -13,7 +13,6 @@ namespace :import do
   task :metro do
     Mongoid.load!('./config/mongoid.yml')
     Mongoid.logger.level = Logger::ERROR
-    Moped.logger.level = Logger::ERROR
 
     file = File.read('./data/metro.json', :external_encoding => 'utf-8', :internal_encoding => 'utf-8')
     data = JSON.parse(file)
