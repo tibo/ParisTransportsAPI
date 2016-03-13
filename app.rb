@@ -37,20 +37,21 @@ class ParisTransportAPI < Sinatra::Base
   end
 
   get '/stations' do
-    if params[:ll].nil?
-      halt 400, {:error => "Latitude and longitude required as \"?ll=latitude,longitude\""}.to_json
-    end
+    # if params[:ll].nil?
+    #   halt 400, {:error => "Latitude and longitude required as \"?ll=latitude,longitude\""}.to_json
+    # end
 
-    latlong = params[:ll].split(',')
+    # latlong = params[:ll].split(',')
 
-    if latlong.length != 2
-      halt 400, {:error => "Invalid latitude and longitude"}.to_json
-    end
+    # if latlong.length != 2
+    #   halt 400, {:error => "Invalid latitude and longitude"}.to_json
+    # end
 
-    lat = latlong.first.to_f
-    lng = latlong[1].to_f
+    # lat = latlong.first.to_f
+    # lng = latlong[1].to_f
 
-    stations = Station.geo_near([ lat, lng ])
+    # stations = Station.geo_near([ lat, lng ])
+    stations = Station.all()
 
     {'stations':stations}.to_json
   end
