@@ -27,7 +27,7 @@ namespace :import do
       station.type = station_hash['type']
 
       begin
-        station.save 
+        station.save! 
         puts station_hash['key'] + " saved"
       rescue OperationFailure => e
         puts "error while saving: " + station_hash['key']
