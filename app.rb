@@ -49,7 +49,11 @@ class ParisTransportAPI < Sinatra::Base
     lat = latlong.first.to_f
     lng = latlong[1].to_f
 
-    stations = Station.geo_near([ lat, lng ])
+    if params[:limit].nil?
+      stations = Station.geo_near([ lat, lng ])
+    else 
+      stations = Station.limit(params[:limit]).geo_near([ lat, lng ])
+    end
 
     {'stations':stations}.to_json
   end
