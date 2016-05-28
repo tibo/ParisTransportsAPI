@@ -21,7 +21,7 @@ class ParisTransportAPI < Sinatra::Base
   redis = Redis.new()
 
   before do
-    content_type :json
+    content_type :json, 'charset' => 'utf-8'
 
     from_cache = redis.get(request.path_info)
 
