@@ -22,6 +22,8 @@ class ParisTransportAPI < Sinatra::Base
 
   before do
     content_type :json, 'charset' => 'utf-8'
+    headers 'Access-Control-Allow-Origin' => '*', 
+            'Access-Control-Allow-Methods' => ['OPTIONS', 'GET', 'POST'] 
 
     from_cache = redis.get(request.path_info)
 
